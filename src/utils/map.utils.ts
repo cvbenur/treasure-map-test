@@ -24,7 +24,7 @@ export function getSquareSymbol(square: Square): string {
       break;
 
     default:
-      throw new Error(`Unrecognized entity type ${square.type as SquareType}.`);
+      throw new Error(`Unrecognized square type: ${square.type as SquareType}`);
   }
 
   return symbol;

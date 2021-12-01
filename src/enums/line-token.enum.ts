@@ -1,4 +1,4 @@
-export enum MapToken {
+export enum LineToken {
   MAP = 'C',
   MOUNTAIN = 'M',
   TREASURE = 'T',
