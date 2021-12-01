@@ -23,6 +23,14 @@ export function loadDataFromFile(path: string): FileData {
   for (const line of fileContents.split('\n')) {
     const tokens = line.split(' - ');
 
+    // TODO: refactor with switch-case
+
+    // If the line is a comment line
+    if (tokens[0] === LineToken.COMMENT) {
+      // Do nothing (ignore)
+      continue;
+    }
+
     // If the line is a map definition line
     if (tokens[0] === LineToken.MAP) {
       // Initialize map with all squares empty
@@ -55,7 +63,6 @@ export function loadDataFromFile(path: string): FileData {
     }
 
     // In any other case
-    //debugger;
     throw new Error(`Unrecognized entity type ${tokens[0]}.`);
   }
 

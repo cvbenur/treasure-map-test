@@ -3,4 +3,5 @@ export enum LineToken {
   MOUNTAIN = 'M',
   TREASURE = 'T',
   ADVENTURER = 'A',
+  COMMENT = '#',
 }
