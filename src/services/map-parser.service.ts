@@ -14,8 +14,7 @@ function fillNewLayout(width: number, height: number): Square[][] {
       row.push(
         {
           type: SquareType.NORMAL,
-          x: j,
-          y: i,
+          loc: { x: j, y: i },
           canStop: false,
         } as Square
       );
@@ -40,27 +39,25 @@ function initMapFromLine(tokens: string[]): TreasureMap {
 
 function addMountainFromLine(tokens: string[], map: TreasureMap): TreasureMap {
   const newMountain: MountainSquare = {
-    x: Number(tokens[1]),
-    y: Number(tokens[2]),
+    loc: { x: Number(tokens[1]), y: Number(tokens[2]) },
     canStop: true,
     type: SquareType.MOUNTAIN,
   };
 
-  map.layout[newMountain.y][newMountain.x] = newMountain;
+  map.layout[newMountain.loc.y][newMountain.loc.x] = newMountain;
 
   return map;
 }
 
 function addTreasureFromLine(tokens: string[], map: TreasureMap): TreasureMap {
   const newTreasure: TreasureSquare = {
-    x: Number(tokens[1]),
-    y: Number(tokens[2]),
-    canStop: false,
+    loc: { x: Number(tokens[1]), y: Number(tokens[2]) },
     type: SquareType.TREASURE,
+    canStop: false,
     treasures: Number(tokens[3]),
   };
 
-  map.layout[newTreasure.y][newTreasure.x] = newTreasure;
+  map.layout[newTreasure.loc.y][newTreasure.loc.x] = newTreasure;
 
   return map;
 }
