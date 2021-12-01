@@ -3,6 +3,7 @@ import { SquareType } from '../enums/square-type.enum';
 import { LineToken } from '../enums/line-token.enum';
 import { FileData } from '../models/interfaces/file-data.interface';
 import { initMapFromLine, readSquareLine } from './map.service';
+import { readAdventurerLine } from './adventurer.service';
 
 /**
  * Reads a correctly formed text file and returns a {@link FileData} object
@@ -15,6 +16,7 @@ export function loadDataFromFile(path: string): FileData {
   // Initializing fileData object with null values
   const fileData: FileData = {
     map: null,
+    adventurers: [],
   };
 
   // Iterating over each line in the file
@@ -47,6 +49,8 @@ export function loadDataFromFile(path: string): FileData {
     if (tokens[0] === LineToken.ADVENTURER) {
       console.log('adventurer')
       // Read adventurer line
+      fileData.adventurers.push(readAdventurerLine(tokens));
+
       continue;
     }
 
