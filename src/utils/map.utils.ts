@@ -22,16 +22,19 @@ export function getSquareSymbol(square: Square): string {
     case SquareType.TREASURE:
       symbol = `T(${(square as TreasureSquare).treasures})`;
       break;
-    
-    // TODO: Adventurer
 
     default:
-      // TODO
+      throw new Error(`Unrecognized entity type ${square.type as SquareType}.`);
   }
 
   return symbol;
 }
 
+/**
+ * Displays the provided {@link TreasureMap} (used for debugging purposes)
+ * @param map The map to display
+ */
 export function printMap(map: TreasureMap) {
+  // TODO: Adventurers
   console.log(map.layout.map(row => row.map(getSquareSymbol).join('\t')).join('\n'));
 }

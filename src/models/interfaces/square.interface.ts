@@ -1,8 +1,8 @@
 import { SquareType } from "../../enums/square-type.enum";
+import { Location } from '../interfaces/location.interface';
 
 export interface Square {
-  x: number;
-  y: number;
+  loc: Location
   type: SquareType;
   canStop: boolean;
 }
