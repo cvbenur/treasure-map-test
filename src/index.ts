@@ -7,6 +7,8 @@ import {
   getNextAdventurerOrientation,
 } from "./services/adventurer.service";
 import { printDetailsForAllAdventurers } from "./utils/adventurer.utils";
+import { TreasureSquare } from "./models/interfaces/square.interface";
+import { SquareType } from "./enums/square-type.enum";
 
 
 const { map, adventurers } = loadDataFromFile(process.cwd() + '/test-maps/test-map-2.txt');
@@ -32,15 +34,34 @@ if (map !== null) {
         // Retrieve the adventurer's next orientation
         adv.orientation = getNextAdventurerOrientation(adv.orientation, adv.moveSequence[0]);
 
+        // Retrieve the adventurer's next location
+        const nextAdvLoc = getNextAdventurerLocation(adv.loc, adv.orientation, map);
+
+        // Save where the adventurer just got on this square or not, for treasure recuperation purposes
+        const justLandedHere = adv.loc === nextAdvLoc;
+
         // Make the adventurer move on this orientation
-        adv.loc = getNextAdventurerLocation(adv.loc, adv.orientation, map);
+        adv.loc = nextAdvLoc;
 
         // Consume the move the adventurer just made
         adv.moveSequence.shift();
 
-        // TODO: adventurer-treasure interaction
-      }
+        // Retrieve the square the adventurer just landed on
+        const currentSquare = map.layout[adv.loc.y][adv.loc.x];
 
+        // If the adventurer just landed on this square this turn
+        if (justLandedHere) {
+          // If there is treasure remaining on this square
+          if (currentSquare.type === SquareType.TREASURE
+            && (currentSquare as TreasureSquare).treasures > 0) {
+            // Give 1 treasure to adventurer
+            adv.treasures++;
+
+            // Remove 1 treasure from square
+            (map.layout[adv.loc.y][adv.loc.x] as TreasureSquare).treasures--;
+          }
+        }
+      }
     } while (movers.length > 0);
   }
 
