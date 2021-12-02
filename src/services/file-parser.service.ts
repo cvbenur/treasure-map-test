@@ -1,9 +1,12 @@
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { SquareType } from '../enums/square-type.enum';
 import { LineToken } from '../enums/line-token.enum';
 import { FileData } from '../models/interfaces/file-data.interface';
 import { initMapFromLine, readSquareLine } from './map.service';
 import { readAdventurerLine } from './adventurer.service';
+import { getMapAsFormattedText } from '../utils/map.utils';
+import { TreasureMap } from '../models/interfaces/treasure-map.interface';
+import { getPrintableAdventurerDetails } from '../utils/adventurer.utils';
 
 /**
  * Reads a correctly formed text file and returns a {@link FileData} object
@@ -11,6 +14,7 @@ import { readAdventurerLine } from './adventurer.service';
  * @returns FileData object
  */
 export function loadDataFromFile(path: string): FileData {
+  // TODO: handle wrong file path
   const fileContents = readFileSync(path, { encoding: 'utf-8', flag: 'r' });
 
   // Initializing fileData object with null values
@@ -55,7 +59,6 @@ export function loadDataFromFile(path: string): FileData {
     
     // Else, if the map is an adventurer definition line
     if (tokens[0] === LineToken.ADVENTURER) {
-      console.log('adventurer')
       // Read adventurer line
       fileData.adventurers.push(readAdventurerLine(tokens));
 
@@ -69,4 +72,21 @@ export function loadDataFromFile(path: string): FileData {
   return fileData;
 }
 
-// TODO: export function writeDataToFile(data: FileData, path: string) {}
+/**
+ * Writes the provided {@link FileData} to a correctly formatted text file
+ * @param data 
+ * @param path 
+ */
+export function writeDataToFile(data: FileData, path: string) {
+  // Check provided path argument
+  if (!path.endsWith('.txt')) path += '.txt';
+  
+  // Retrieve the formatted definition for the map
+  let res = getMapAsFormattedText(data.map as TreasureMap);
+
+  // Retrieve teh formatted details for the adventurers
+  res += data.adventurers.map(getPrintableAdventurerDetails).join('\n');
+
+  // Write output to file
+  writeFileSync(path, res + '\n', { encoding: 'utf-8', flag: 'w' });
+}

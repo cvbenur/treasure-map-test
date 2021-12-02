@@ -1,4 +1,9 @@
+import { join } from 'path';
 import { loadDataFromFile } from "./services/file-parser.service";
+import {
+  INPUT_DIRECTORY_PATH,
+  OUTPUT_DIRECTORY_PATH,
+} from "./constants/file.constants";
 import { printMap } from "./utils/map.utils";
 import { Adventurer } from "./models/interfaces/adventurer.interface";
 import {
@@ -11,7 +16,9 @@ import { TreasureSquare } from "./models/interfaces/square.interface";
 import { SquareType } from "./enums/square-type.enum";
 
 
-const { map, adventurers } = loadDataFromFile(process.cwd() + '/test-maps/test-map-2.txt');
+// Load map and adventurer data from provided file
+const { map, adventurers } = loadDataFromFile(join(INPUT_DIRECTORY_PATH, 'test-map-2.txt'));
+
 
 if (map !== null) {
   // Printing the initial map (for debugging purposes)
@@ -70,4 +77,6 @@ if (map !== null) {
 
   // Printing the final adventurer configuration (for debugging purposes)
   printDetailsForAllAdventurers(adventurers);
+
+  // TODO: generate output file
 }

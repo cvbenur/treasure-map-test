@@ -85,13 +85,17 @@ function newTreasureSquareFromLine(tokens: string[]): TreasureSquare {
  * @returns Correctly initlalized Square object
  */
 export function readSquareLine(tokens: string[]): Square {
+  // Reading the first token
   switch (tokens[0]) {
+    // If the token defines a MOUNTAIN square
     case SquareType.MOUNTAIN:
       return newMountainSquareFromLine(tokens);
     
+    // If the token defines a TREASURE square
     case SquareType.TREASURE:
       return newTreasureSquareFromLine(tokens);
     
+    // In any other case
     default:
       throw new Error('Wrong square type: ' + tokens[0]);
   }
