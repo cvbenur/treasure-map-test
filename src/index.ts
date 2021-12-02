@@ -1,33 +1,28 @@
 import { join } from 'path';
-import { loadDataFromFile } from "./services/file-parser.service";
+import { loadDataFromFile, writeDataToFile } from "./services/file-parser.service";
 import {
   INPUT_DIRECTORY_PATH,
   OUTPUT_DIRECTORY_PATH,
+  FILENAME,
 } from "./constants/file.constants";
-import { printMap } from "./utils/map.utils";
 import { Adventurer } from "./models/interfaces/adventurer.interface";
 import {
   adventurerHasRemainingMoves,
   getNextAdventurerLocation,
   getNextAdventurerOrientation,
 } from "./services/adventurer.service";
-import { printDetailsForAllAdventurers } from "./utils/adventurer.utils";
 import { TreasureSquare } from "./models/interfaces/square.interface";
 import { SquareType } from "./enums/square-type.enum";
 
 
 // Load map and adventurer data from provided file
-const { map, adventurers } = loadDataFromFile(join(INPUT_DIRECTORY_PATH, 'test-map-2.txt'));
+const { map, adventurers } = loadDataFromFile(join(INPUT_DIRECTORY_PATH, FILENAME));
+const OUTPUT_FILE_PATH = join(OUTPUT_DIRECTORY_PATH, 'output-' + FILENAME);
 
 
 if (map !== null) {
-  // Printing the initial map (for debugging purposes)
-  printMap(map, adventurers.length > 0 ? adventurers : undefined);
-
+  // If there are any adventurers loaded from the file
   if (adventurers.length > 0) {
-    // Printing the initial adventurer configuration (for debugging purposes)
-    printDetailsForAllAdventurers(adventurers);
-
     // Initialize movers array to []
     let movers: Adventurer[] = [];
 
@@ -72,11 +67,6 @@ if (map !== null) {
     } while (movers.length > 0);
   }
 
-  // Printing the final map (for debugging purposes)
-  printMap(map, adventurers.length > 0 ? adventurers : undefined);
-
-  // Printing the final adventurer configuration (for debugging purposes)
-  printDetailsForAllAdventurers(adventurers);
-
-  // TODO: generate output file
+  // Print data to output file
+  writeDataToFile({ map: map, adventurers: adventurers }, OUTPUT_FILE_PATH);
 }
