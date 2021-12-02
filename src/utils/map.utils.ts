@@ -47,5 +47,6 @@ export function printMap(map: TreasureMap, adventurers?: Adventurer[]) {
   }
 
   // Print the result
+  console.log('MAP:');
   console.log(toPrint.map(row => row.join('\t')).join('\n'));
 }
