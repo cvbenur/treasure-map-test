@@ -2,13 +2,24 @@ import { SquareType } from "../enums/square-type.enum";
 import { MountainSquare, Square, TreasureSquare } from "../models/interfaces/square.interface";
 import { TreasureMap } from "../models/interfaces/treasure-map.interface";
 
-function fillNewLayout(width: number, height: number): Square[][] {
+/**
+ * Initializes and returns an empty {@link TreasureMap} layout from a given map size
+ * @param width number - The map's width
+ * @param height number - The map's height
+ * @returns Square[][] - The initialized empty layout
+ */
+function fillNewEmptyLayout(width: number, height: number): Square[][] {
   const layout = [];
 
+  // Iterating over the number of rows
   for (let i = 0; i < height; i++) {
+    // Initializing a new row
     const row: Square[] = [];
   
+    // Iterating over the number of columns
     for (let j = 0; j < width; j++) {
+
+      // Push an empty square into the row
       row.push(
         {
           type: SquareType.NORMAL,
@@ -18,6 +29,7 @@ function fillNewLayout(width: number, height: number): Square[][] {
       );
     }
 
+    // Push the resulting row into the layout object
     layout.push(row);
   }
 
@@ -36,10 +48,15 @@ export function initMapFromLine(tokens: string[]): TreasureMap {
   return {
     width: width,
     height: height,
-    layout: fillNewLayout(width, height)
+    layout: fillNewEmptyLayout(width, height)
   };
 }
 
+/**
+ * Initlalizes and returns a new {@link MountainSquare} from a given line
+ * @param tokens string[] - The tokenized line
+ * @returns Initlalized MountainSquare object
+ */
 function newMountainSquareFromLine(tokens: string[]): MountainSquare {
   return {
     loc: { x: Number(tokens[1]), y: Number(tokens[2]) },
@@ -48,6 +65,11 @@ function newMountainSquareFromLine(tokens: string[]): MountainSquare {
   };
 }
 
+/**
+ * Initlalizes and returns a new {@link TreasureSquare} from a given line
+ * @param tokens string[] - The tokenized line
+ * @returns Initlalized TreasureSquare object
+ */
 function newTreasureSquareFromLine(tokens: string[]): TreasureSquare {
   return {
     loc: { x: Number(tokens[1]), y: Number(tokens[2]) },

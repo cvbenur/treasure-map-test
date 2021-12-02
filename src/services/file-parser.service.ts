@@ -68,3 +68,5 @@ export function loadDataFromFile(path: string): FileData {
 
   return fileData;
 }
+
+// TODO: export function writeDataToFile(data: FileData, path: string) {}

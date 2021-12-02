@@ -9,30 +9,24 @@ import { Adventurer } from "../models/interfaces/adventurer.interface";
  * @returns string
  */
 export function getSquareSymbol(square: Square): string {
-  let symbol = '.';
-
+  // Checking the square's type
   switch (square.type) {
+    // If the square is empty
     case SquareType.NORMAL:
-      symbol = '.';
-      break;
+      return '.';
     
+    // If the square is a mountain square
     case SquareType.MOUNTAIN:
-      symbol = 'M';
-      break;
+      return 'M';
     
+    // If the square is a treasure square
     case SquareType.TREASURE:
-      symbol = `T(${(square as TreasureSquare).treasures})`;
-      break;
+      return `T(${(square as TreasureSquare).treasures})`;
 
+    // In any other case
     default:
       throw new Error(`Unrecognized square type: ${square.type as SquareType}`);
   }
-
-  return symbol;
-}
-
-function getAdventurerSymbol(adv: Adventurer): string {
-  return `A(${adv.name})`;
 }
 
 /**
@@ -48,7 +42,7 @@ export function printMap(map: TreasureMap, adventurers?: Adventurer[]) {
     // Iterate over provided Adventurer array
     for (const adventurer of adventurers) {
       // Replace square by Adventurer found at this location
-      toPrint[adventurer.loc.y][adventurer.loc.x] = getAdventurerSymbol(adventurer);
+      toPrint[adventurer.loc.y][adventurer.loc.x] = `A(${adventurer.name})`;
     }
   }
 
