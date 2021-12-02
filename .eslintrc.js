@@ -3,13 +3,19 @@ module.exports = {
   env: { node: true },
   parser: '@typescript-eslint/parser',
   plugins: [ '@typescript-eslint' ],
-  parserOptions: {
-    project: './tsconfig.json'
-  },
+  overrides: [
+    {
+      files: ['*.ts'],
+      parserOptions: {
+        project: './tsconfig.json'
+      },
+    }
+  ],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:jest/recommended'
   ],
   rules: {
   }
