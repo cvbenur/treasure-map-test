@@ -25,4 +25,4 @@ export interface TreasureSquare extends Square {
   treasures: number;
 }
 
-export type MountainSquare = Square
+export type MountainSquare = Square;

@@ -15,5 +15,6 @@ export function printAdventurerDetails(adv: Adventurer) {
  * @param advs {@link Adventurer}[] - The given Adventurer array
  */
 export function printDetailsForAllAdventurers(advs: Adventurer[]) {
+  console.log('ADVENTURERS:');
   advs.map(printAdventurerDetails);
 }
