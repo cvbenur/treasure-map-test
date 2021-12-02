@@ -1,13 +1,12 @@
 import { Adventurer } from "../models/interfaces/adventurer.interface";
 
 /**
- * Prints the details for a given Adventurer
+ * Returns the correctly formatted details for a given Adventurer
  * @param adv {@link Adventurer} - The given Adventurer
+ * @returns string - The correctly formatted Adventurer details
  */
-export function printAdventurerDetails(adv: Adventurer) {
-  console.log(
-    `${adv.name} - ${adv.loc.x} - ${adv.loc.y} - ${adv.orientation} - ${adv.treasures}`
-  );
+export function getPrintableAdventurerDetails(adv: Adventurer): string {
+  return `A - ${adv.name} - ${adv.loc.x} - ${adv.loc.y} - ${adv.orientation} - ${adv.treasures}`;
 }
 
 /**
@@ -16,5 +15,5 @@ export function printAdventurerDetails(adv: Adventurer) {
  */
 export function printDetailsForAllAdventurers(advs: Adventurer[]) {
   console.log('ADVENTURERS:');
-  advs.map(printAdventurerDetails);
+  console.log(advs.map(getPrintableAdventurerDetails).join('\n'));
 }
