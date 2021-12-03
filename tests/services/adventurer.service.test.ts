@@ -1,33 +1,27 @@
 import { Move } from "../../src/enums/move.enum";
 import { Orientation } from "../../src/enums/orientation.enum";
-import { Adventurer } from "../../src/models/interfaces/adventurer.interface";
 import {
   readAdventurerLine,
   getNextAdventurerOrientation,
   getNextAdventurerLocation,
   adventurerHasRemainingMoves,
 } from "../../src/services/adventurer.service";
-import { loadDataFromFile } from "../../src/services/file-parser.service";
-import { INPUT_DIRECTORY_PATH } from "../../src/constants/file.constants";
-import { join } from "path";
 import { Location } from "../../src/models/interfaces/location.interface";
 import { TreasureMap } from "../../src/models/interfaces/treasure-map.interface";
+
+import {
+  WELL_FORMED_ADVENTURER_LINE,
+  INDIANA,
+  LARA
+} from "../constants/adventurer.constants";
+
+import { MAP_3_DATA } from "../constants/map.constants";
 
 describe('adventurer.service.ts', () => {
   describe('readAventurerLine()', () => {
     it('should init a new Adventurer object from a well-formed Adventurer definition line', () => {
-      // TODO: move to constants file
-      const wellFormedAdventurerLine = `A - Indiana - 1 - 2 - N - ADGDADA`.split(' - ');
-
-      const actual = readAdventurerLine(wellFormedAdventurerLine);
-      // TODO: move to constants file
-      const expected: Adventurer = {
-        name: 'Indiana',
-        loc: { x: 1, y: 2 },
-        orientation: Orientation.NORTH,
-        moveSequence: [Move.FORWARD, Move.RIGHT, Move.LEFT, Move.RIGHT, Move.FORWARD, Move.RIGHT, Move.FORWARD],
-        treasures: 0
-      };
+      const actual = readAdventurerLine(WELL_FORMED_ADVENTURER_LINE);
+      const expected = INDIANA;
 
       expect(actual).toStrictEqual(expected);
     });
@@ -99,13 +93,6 @@ describe('adventurer.service.ts', () => {
   });
 
   describe('getNextAdventurerLocation()', () => {
-    /** TODO: move to constants file
-     * .  .  .
-     * .  M  .
-     * .  .  .
-     */
-    const { map } = loadDataFromFile(join(INPUT_DIRECTORY_PATH, 'test-map-3.txt'));
-    
     it('should return current square when next square can block', () => {
       /** Starting situation :
        * .  .  .
@@ -115,7 +102,7 @@ describe('adventurer.service.ts', () => {
       const currentLocation: Location = { x: 0, y: 1 };
       const currentOrientation: Orientation = Orientation.EAST;
 
-      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, map as TreasureMap);
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, MAP_3_DATA.map as TreasureMap);
       const expected = currentLocation;
 
       expect(actual).toBe(expected);
@@ -130,7 +117,7 @@ describe('adventurer.service.ts', () => {
       const currentLocation: Location = { x: 2, y: 1 };
       const currentOrientation: Orientation = Orientation.EAST;
 
-      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, map as TreasureMap);
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, MAP_3_DATA.map as TreasureMap);
       const expected = currentLocation;
 
       expect(actual).toBe(expected);
@@ -145,7 +132,7 @@ describe('adventurer.service.ts', () => {
       const currentLocation: Location = { x: 2, y: 1 };
       const currentOrientation: Orientation = Orientation.SOUTH;
 
-      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, map as TreasureMap);
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, MAP_3_DATA.map as TreasureMap);
       const expected: Location = { x: 2, y: 2 };
 
       expect(actual).toStrictEqual(expected);
@@ -154,32 +141,14 @@ describe('adventurer.service.ts', () => {
 
   describe('adventurerHasRemainingMoves()', () => {
     it('should return `false` for an Adventurer with no moves remaining', () => {
-      // TODO: move to constants file
-      const advWithNoRemainingMoves: Adventurer = {
-        name: 'Indiana',
-        loc: { x: 1, y: 2 },
-        orientation: Orientation.NORTH,
-        moveSequence: [],
-        treasures: 0
-      };
-
-      const actual = adventurerHasRemainingMoves(advWithNoRemainingMoves);
+      const actual = adventurerHasRemainingMoves(LARA);
       const expected = false;
 
       expect(actual).toBe(expected);
     });
 
     it('should return `true` for an Adventurer with moves remaining', () => {
-      // TODO: move to constants file
-      const advWithMovesRemaining: Adventurer = {
-        name: 'Indiana',
-        loc: { x: 1, y: 2 },
-        orientation: Orientation.NORTH,
-        moveSequence: [Move.FORWARD, Move.RIGHT, Move.LEFT, Move.RIGHT, Move.FORWARD, Move.RIGHT, Move.FORWARD],
-        treasures: 0
-      };
-
-      const actual = adventurerHasRemainingMoves(advWithMovesRemaining);
+      const actual = adventurerHasRemainingMoves(INDIANA);
       const expected = true;
 
       expect(actual).toBe(expected);
