@@ -123,7 +123,22 @@ describe('adventurer.service.ts', () => {
       expect(actual).toBe(expected);
     });
 
-    it('should return next square to the south when going forward with orientation south', () => {
+    it('should return next square to the north when going forward with orientation north inside map bounds', () => {
+      /** Starting situation :
+       * .  .  .
+       * .  M  A
+       * .  .  .
+       */
+      const currentLocation: Location = { x: 2, y: 1 };
+      const currentOrientation: Orientation = Orientation.NORTH;
+
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, MAP_3_DATA.map as TreasureMap);
+      const expected: Location = { x: 2, y: 0 };
+
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('should return next square to the south when going forward with orientation south inside map bounds', () => {
       /** Starting situation :
        * .  .  .
        * .  M  A
@@ -134,6 +149,36 @@ describe('adventurer.service.ts', () => {
 
       const actual = getNextAdventurerLocation(currentLocation, currentOrientation, MAP_3_DATA.map as TreasureMap);
       const expected: Location = { x: 2, y: 2 };
+
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('should return next square to the east when going forward with orientation east inside map bounds', () => {
+      /** Starting situation :
+       * .  .  .
+       * .  M  .
+       * .  A  .
+       */
+      const currentLocation: Location = { x: 1, y: 2 };
+      const currentOrientation: Orientation = Orientation.EAST;
+
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, MAP_3_DATA.map as TreasureMap);
+      const expected: Location = { x: 2, y: 2 };
+
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('should return next square to the west when going forward with orientation west inside map bounds', () => {
+      /** Starting situation :
+       * .  .  .
+       * .  M  .
+       * .  A  .
+       */
+      const currentLocation: Location = { x: 1, y: 2 };
+      const currentOrientation: Orientation = Orientation.WEST;
+
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, MAP_3_DATA.map as TreasureMap);
+      const expected: Location = { x: 0, y: 2 };
 
       expect(actual).toStrictEqual(expected);
     });
