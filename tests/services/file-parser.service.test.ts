@@ -24,5 +24,13 @@ describe('file-parser.service.ts', () => {
 
       expect(mockFn).toThrowError('Unrecognized entity type Y.');
     });
+
+    it('should throw a "map not properly defined in file" error for badly-formed map files', () => {
+      const mockFn = () => loadDataFromFile(join(INPUT_DIRECTORY_PATH, 'test-map-5.txt'));
+
+      expect(mockFn).toThrowError('Map not properly defined in file.');
+    });
   });
+
+  // TODO: writeDataToFile
 });
