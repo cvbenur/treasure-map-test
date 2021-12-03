@@ -78,7 +78,7 @@ export function writeDataToFile(data: FileData, path: string) {
   // Retrieve the formatted definition for the map
   let res = getMapAsFormattedText(data.map as TreasureMap);
 
-  // Retrieve teh formatted details for the adventurers
+  // Retrieve the formatted details for the adventurers
   res += data.adventurers.map(getPrintableAdventurerDetails).join('\n');
 
   // Write output to file

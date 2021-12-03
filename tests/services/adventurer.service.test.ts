@@ -99,7 +99,7 @@ describe('adventurer.service.ts', () => {
   });
 
   describe('getNextAdventurerLocation()', () => {
-    /**
+    /** TODO: move to constants file
      * .  .  .
      * .  M  .
      * .  .  .
