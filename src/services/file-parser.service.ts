@@ -1,5 +1,4 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { SquareType } from '../enums/square-type.enum';
 import { LineToken } from '../enums/line-token.enum';
 import { FileData } from '../models/interfaces/file-data.interface';
 import { initMapFromLine, readSquareLine } from './map.service';
@@ -15,7 +14,8 @@ import { getPrintableAdventurerDetails } from '../utils/adventurer.utils';
  */
 export function loadDataFromFile(path: string): FileData {
   // TODO: handle wrong file path
-  const fileContents = readFileSync(path, { encoding: 'utf-8', flag: 'r' });
+  const fileContents = readFileSync(path, { encoding: 'utf-8', flag: 'r' })
+    .trim();
 
   // Initializing fileData object with null values
   const fileData: FileData = {
@@ -25,48 +25,42 @@ export function loadDataFromFile(path: string): FileData {
 
   // Iterating over each line in the file
   for (const line of fileContents.split('\n')) {
+    // Ignore comment lines
+    if (line.startsWith(LineToken.COMMENT)) continue;
+
     const tokens = line.split(' - ');
 
-    // TODO: refactor with switch-case
+    switch (tokens[0]) {
+      // If the line defines the map
+      case LineToken.MAP:
+        // Initialize map with all squares empty
+        fileData.map = initMapFromLine(tokens);
+        break;
+      
+      // If the line defines a square
+      case LineToken.MOUNTAIN:
+      case LineToken.TREASURE: {
+        // If the map is not properly defined in the text file
+        if (!fileData.map) {
+          throw new Error('Map not properly defined in file.');
+        }
 
-    // If the line is a comment line
-    if (tokens[0] === LineToken.COMMENT) {
-      // Do nothing (ignore)
-      continue;
+        // Else, read square line
+        const newSquare = readSquareLine(tokens);
+        fileData.map.layout[newSquare.loc.y][newSquare.loc.x] = newSquare;
+      }
+        break;
+      
+      // If the line defines an adventurer
+      case LineToken.ADVENTURER:
+        // Read adventurer line
+        fileData.adventurers.push(readAdventurerLine(tokens));
+        break;
+      
+      // In any other case
+      default:
+        throw new Error(`Unrecognized entity type ${tokens[0]}.`);
     }
-
-    // If the line is a map definition line
-    if (tokens[0] === LineToken.MAP) {
-      // Initialize map with all squares empty
-      fileData.map = initMapFromLine(tokens);
-
-      continue;
-    }
-
-    // If the map is not properly defined in the text file
-    if (!fileData.map) {
-      throw new Error('Map not properly defined in file.');
-    }
-
-    // If the line is a map element line
-    if ((Object.values(SquareType) as string[]).includes(tokens[0])) {
-      // Else, read square line
-      const newSquare = readSquareLine(tokens);
-      fileData.map.layout[newSquare.loc.y][newSquare.loc.x] = newSquare;
-
-      continue;
-    }
-    
-    // Else, if the map is an adventurer definition line
-    if (tokens[0] === LineToken.ADVENTURER) {
-      // Read adventurer line
-      fileData.adventurers.push(readAdventurerLine(tokens));
-
-      continue;
-    }
-
-    // In any other case
-    throw new Error(`Unrecognized entity type ${tokens[0]}.`);
   }
 
   return fileData;
@@ -84,8 +78,10 @@ export function writeDataToFile(data: FileData, path: string) {
   // Retrieve the formatted definition for the map
   let res = getMapAsFormattedText(data.map as TreasureMap);
 
-  // Retrieve teh formatted details for the adventurers
+  // Retrieve the formatted details for the adventurers
   res += data.adventurers.map(getPrintableAdventurerDetails).join('\n');
+
+  // TODO: handle non-existent output directory
 
   // Write output to file
   writeFileSync(path, res + '\n', { encoding: 'utf-8', flag: 'w' });

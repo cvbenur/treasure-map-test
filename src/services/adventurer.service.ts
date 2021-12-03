@@ -77,7 +77,7 @@ export function getNextAdventurerLocation(currentLoc: Location, currentOrientati
     // If the Adventuer is moving south
     case Orientation.SOUTH: {
       // If the next square to the south is reachable (inside map bounds and not an obstacle)
-      if (nextLoc.y + 1 <= map.height && !map.layout[nextLoc.y + 1][nextLoc.x].canStop) {
+      if (nextLoc.y + 1 <= map.height - 1 && !map.layout[nextLoc.y + 1][nextLoc.x].canStop) {
         // Set Adventurer's next location to the next square to the south
         nextLoc.y = nextLoc.y + 1;
       }
@@ -87,7 +87,7 @@ export function getNextAdventurerLocation(currentLoc: Location, currentOrientati
     // If the Adventuer is moving east
     case Orientation.EAST: {
       // If the next square to the east is reachable (inside map bounds and not an obstacle)
-      if (nextLoc.x + 1 <= map.width && !map.layout[nextLoc.y][nextLoc.x + 1].canStop) {
+      if (nextLoc.x + 1 <= map.width - 1 && !map.layout[nextLoc.y][nextLoc.x + 1].canStop) {
         // Set Adventurer's next location to the next square to the east
         nextLoc.x = nextLoc.x + 1;
       }
