@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { LineToken } from '../enums/line-token.enum';
 import { FileData } from '../models/interfaces/file-data.interface';
 import { initMapFromLine, readSquareLine } from './map.service';
@@ -6,6 +6,7 @@ import { readAdventurerLine } from './adventurer.service';
 import { getMapAsFormattedText } from '../utils/map.utils';
 import { TreasureMap } from '../models/interfaces/treasure-map.interface';
 import { getPrintableAdventurerDetails } from '../utils/adventurer.utils';
+import { OUTPUT_DIRECTORY_PATH } from '../constants/file.constants';
 
 /**
  * Reads a correctly formed text file and returns a {@link FileData} object
@@ -81,7 +82,11 @@ export function writeDataToFile(data: FileData, path: string) {
   // Retrieve the formatted details for the adventurers
   res += data.adventurers.map(getPrintableAdventurerDetails).join('\n');
 
-  // TODO: handle non-existent output directory
+  // If the output directory doesn't exist
+  if (!existsSync(OUTPUT_DIRECTORY_PATH)) {
+    // Create it
+    mkdirSync(OUTPUT_DIRECTORY_PATH);
+  }
 
   // Write output to file
   writeFileSync(path, res + '\n', { encoding: 'utf-8', flag: 'w' });

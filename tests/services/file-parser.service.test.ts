@@ -4,8 +4,6 @@ import { join } from "path";
 
 import { MAP_2_DATA } from "../constants/map.constants";
 
-jest.mock('../../src/utils/map.utils');
-
 describe('file-parser.service.ts', () => {
   describe('loadDataFromFile()', () => {
     it('should read every type of line token and correctly return the map and adventurers data', () => {
@@ -32,7 +30,6 @@ describe('file-parser.service.ts', () => {
     });
   });
 
-  // TODO: writeDataToFile
   describe('writeDataToFile()', () => {
 
     // FIXME
@@ -42,6 +39,12 @@ describe('file-parser.service.ts', () => {
       expect(mockFn).not.toThrow();
     });
 
-    // TODO: check that every subfunction is called
+    it('should create the output directory if it doesn\'t exist', () => {
+      // TODO
+    });
+
+    it('should correctly write the file data to the output file', () => {
+      // TODO
+    });
   });
 });
