@@ -81,6 +81,8 @@ export function writeDataToFile(data: FileData, path: string) {
   // Retrieve the formatted details for the adventurers
   res += data.adventurers.map(getPrintableAdventurerDetails).join('\n');
 
+  // TODO: handle non-existent output directory
+
   // Write output to file
   writeFileSync(path, res + '\n', { encoding: 'utf-8', flag: 'w' });
 }

@@ -33,4 +33,15 @@ describe('file-parser.service.ts', () => {
   });
 
   // TODO: writeDataToFile
+  describe('writeDataToFile()', () => {
+
+    // FIXME
+    it('should understand filenames not ending with ".txt"', () => {
+      const mockFn = () => writeDataToFile(MAP_2_DATA, join(OUTPUT_DIRECTORY_PATH, 'output-test-map-2'));
+
+      expect(mockFn).not.toThrow();
+    });
+
+    // TODO: check that every subfunction is called
+  });
 });
