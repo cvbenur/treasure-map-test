@@ -10,6 +10,8 @@ import {
 import { loadDataFromFile } from "../../src/services/file-parser.service";
 import { INPUT_DIRECTORY_PATH } from "../../src/constants/file.constants";
 import { join } from "path";
+import { Location } from "../../src/models/interfaces/location.interface";
+import { TreasureMap } from "../../src/models/interfaces/treasure-map.interface";
 
 describe('adventurer.service.ts', () => {
   describe('readAventurerLine()', () => {
@@ -96,12 +98,57 @@ describe('adventurer.service.ts', () => {
     });
   });
 
-  // TODO
   describe('getNextAdventurerLocation()', () => {
-    const { map } = loadDataFromFile(join(INPUT_DIRECTORY_PATH, 'test-map-1.txt'));
+    /**
+     * .  .  .
+     * .  M  .
+     * .  .  .
+     */
+    const { map } = loadDataFromFile(join(INPUT_DIRECTORY_PATH, 'test-map-3.txt'));
     
-    it('should return next square to the left when going "west" inside map bounds with no blocking square on the path', () => {
-      
+    it('should return current square when next square can block', () => {
+      /** Starting situation :
+       * .  .  .
+       * A  M  .
+       * .  .  .
+       */
+      const currentLocation: Location = { x: 0, y: 1 };
+      const currentOrientation: Orientation = Orientation.EAST;
+
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, map as TreasureMap);
+      const expected = currentLocation;
+
+      expect(actual).toBe(expected);
+    });
+
+    it('should return current square when next square is out of map bounds', () => {
+      /** Starting situation :
+       * .  .  .
+       * .  M  A
+       * .  .  .
+       */
+      const currentLocation: Location = { x: 2, y: 1 };
+      const currentOrientation: Orientation = Orientation.EAST;
+
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, map as TreasureMap);
+      const expected = currentLocation;
+
+      expect(actual).toBe(expected);
+    });
+
+    it('should return next square to the south when going forward with orientation south', () => {
+      /** Starting situation :
+       * .  .  .
+       * .  M  A
+       * .  .  .
+       */
+      const currentLocation: Location = { x: 2, y: 1 };
+      const currentOrientation: Orientation = Orientation.SOUTH;
+
+      const actual = getNextAdventurerLocation(currentLocation, currentOrientation, map as TreasureMap);
+      const expected: Location = { x: 2, y: 2 };
+
+      expect(actual).toStrictEqual(expected);
     });
   });
 
