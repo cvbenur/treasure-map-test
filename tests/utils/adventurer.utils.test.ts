@@ -1,4 +1,4 @@
-import { getPrintableAdventurerDetails, printDetailsForAllAdventurers } from "../../src/utils/adventurer.utils";
+import { getPrintableAdventurerDetails } from "../../src/utils/adventurer.utils";
 
 import { NATHAN_DRAKE } from "../constants/adventurer.constants";
 
