@@ -6,7 +6,7 @@ import { readAdventurerLine } from './adventurer.service';
 import { getMapAsFormattedText } from '../utils/map.utils';
 import { TreasureMap } from '../models/interfaces/treasure-map.interface';
 import { getPrintableAdventurerDetails } from '../utils/adventurer.utils';
-import { OUTPUT_DIRECTORY_PATH } from '../constants/file.constants';
+import { join } from "path";
 
 /**
  * Reads a correctly formed text file and returns a {@link FileData} object
@@ -69,12 +69,13 @@ export function loadDataFromFile(path: string): FileData {
 
 /**
  * Writes the provided {@link FileData} to a correctly formatted text file
- * @param data 
- * @param path 
+ * @param data {@link FileData} - The provided file data to output
+ * @param outputDirectoryPath - The path to the output directory
+ * @param filename string - The name of the file to generate 
  */
-export function writeDataToFile(data: FileData, path: string) {
-  // Check provided path argument
-  if (!path.endsWith('.txt')) path += '.txt';
+export function writeDataToFile(data: FileData, outputDirectoryPath: string, filename: string) {
+  // Check provided filename
+  if (!filename.endsWith('.txt')) filename += '.txt';
   
   // Retrieve the formatted definition for the map
   let res = getMapAsFormattedText(data.map as TreasureMap);
@@ -82,12 +83,12 @@ export function writeDataToFile(data: FileData, path: string) {
   // Retrieve the formatted details for the adventurers
   res += data.adventurers.map(getPrintableAdventurerDetails).join('\n');
 
-  // If the output directory doesn't exist
-  if (!existsSync(OUTPUT_DIRECTORY_PATH)) {
+  // If the specified output directory doesn't exist
+  if (!existsSync(outputDirectoryPath)) {
     // Create it
-    mkdirSync(OUTPUT_DIRECTORY_PATH);
+    mkdirSync(outputDirectoryPath);
   }
 
   // Write output to file
-  writeFileSync(path, res + '\n', { encoding: 'utf-8', flag: 'w' });
+  writeFileSync(join(outputDirectoryPath, filename), res + '\n', { encoding: 'utf-8', flag: 'w' });
 }

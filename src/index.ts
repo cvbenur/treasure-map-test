@@ -17,7 +17,7 @@ import { SquareType } from "./enums/square-type.enum";
 
 // Load map and adventurer data from provided file
 const { map, adventurers } = loadDataFromFile(join(INPUT_DIRECTORY_PATH, FILENAME));
-const OUTPUT_FILE_PATH = join(OUTPUT_DIRECTORY_PATH, 'output-' + FILENAME);
+const OUTPUT_FILENAME = 'output-' + FILENAME;
 
 
 if (map !== null) {
@@ -68,5 +68,5 @@ if (map !== null) {
   }
 
   // Print data to output file
-  writeDataToFile({ map: map, adventurers: adventurers }, OUTPUT_FILE_PATH);
+  writeDataToFile({ map: map, adventurers: adventurers }, OUTPUT_DIRECTORY_PATH, OUTPUT_FILENAME);
 }
