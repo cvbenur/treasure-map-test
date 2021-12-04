@@ -2,7 +2,8 @@ import { loadDataFromFile, writeDataToFile } from "../../src/services/file-parse
 import { INPUT_DIRECTORY_PATH, OUTPUT_DIRECTORY_PATH } from "../../src/constants/file.constants";
 import { join } from "path";
 
-import { MAP_2_DATA } from "../constants/map.constants";
+import { MAP_2_DATA, MAP_3_DATA } from "../constants/map.constants";
+import { existsSync, rmdirSync, unlinkSync } from "fs";
 
 describe('file-parser.service.ts', () => {
   describe('loadDataFromFile()', () => {
@@ -32,19 +33,57 @@ describe('file-parser.service.ts', () => {
 
   describe('writeDataToFile()', () => {
 
-    // FIXME
+    it('should correctly generate the output file', () => {
+      const GENERATED_TEST_FILENAME = 'test-file-map-3.txt';
+      const filePath = join(OUTPUT_DIRECTORY_PATH, GENERATED_TEST_FILENAME);
+
+      // Making sure the file doesn't exist prior to test
+      if (existsSync(filePath)) {
+        unlinkSync(filePath);
+      }
+
+      const existsBeforeFunction = existsSync(filePath);
+      const expectedBeforeFunction = false;
+
+      expect(existsBeforeFunction).toBe(expectedBeforeFunction);
+
+      // Running the test
+      writeDataToFile(MAP_3_DATA, OUTPUT_DIRECTORY_PATH, GENERATED_TEST_FILENAME);
+
+      const actual = existsSync(join(OUTPUT_DIRECTORY_PATH, GENERATED_TEST_FILENAME));
+      const expectedAfterFunction = true;
+
+      expect(actual).toBe(expectedAfterFunction);
+
+      // Removing created test file
+      unlinkSync(filePath);
+    });
+
     it('should understand filenames not ending with ".txt"', () => {
-      const mockFn = () => writeDataToFile(MAP_2_DATA, join(OUTPUT_DIRECTORY_PATH, 'output-test-map-2'));
+      const fn = () => writeDataToFile(MAP_2_DATA, OUTPUT_DIRECTORY_PATH, 'output-test-map-2');
 
-      expect(mockFn).not.toThrow();
+      expect(fn).not.toThrow();
     });
 
-    it('should create the output directory if it doesn\'t exist', () => {
-      // TODO
-    });
+    it('should create the specified output directory if it doesn\'t exist', () => {
+      const NONEXISTANT_DIRECTORY_PATH = join(OUTPUT_DIRECTORY_PATH, 'nonexistant');
 
-    it('should correctly write the file data to the output file', () => {
-      // TODO
+      // Making sure the directory doesn't exist before running the test
+      const existsBeforeFunction = existsSync(NONEXISTANT_DIRECTORY_PATH);
+      const expectedBeforeFunction = false;
+
+      expect(existsBeforeFunction).toBe(expectedBeforeFunction);
+
+      // Running the test
+      writeDataToFile(MAP_2_DATA, NONEXISTANT_DIRECTORY_PATH, 'test-result-file');
+
+      const actual = existsSync(NONEXISTANT_DIRECTORY_PATH);
+      const expectedAfterFunction = true;
+
+      expect(actual).toBe(expectedAfterFunction);
+
+      // Deleting created test directory
+      rmdirSync(NONEXISTANT_DIRECTORY_PATH, { recursive: true });
     });
   });
 });
