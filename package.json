@@ -1,7 +1,7 @@
 {
   "name": "treasure-map-test",
   "version": "0.0.1",
-  "description": "",
+  "description": "CarbonIT technical test.",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && node .",
@@ -11,6 +11,10 @@
     "coverage": "jest --coverage"
   },
   "author": "Ruben Nabet",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cvbenur/treasure-map-test"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.0.3",
