@@ -1,6 +1,8 @@
-# treasure-map-test
+# 🧭 treasure-map-test
 
 This project is a technical test for CarbonIT.
+
+⚠ **Disclaimer**: This program assumes that the Adventurer lines are always defined last in the input files. ⚠
 
 ## Installation
 
@@ -12,7 +14,7 @@ npm install
 yarn install
 ```
 
-## Testing / Coverage
+## 🧪 Testing / Coverage
 
 ### Unit tests
 
@@ -42,7 +44,7 @@ npm run coverage
 yarn coverage
 ```
 
-## Instructions
+## ▶ Instructions
 
 ### Running the program
 
@@ -60,11 +62,11 @@ The specified input file will be read and loaded into the program, after which t
 
 ### Changing the input / output directories
 
-#### Input directory
+#### ➡ Input directory
 
 The default value for the input directory is `/test-maps`. In order to use another directory for input files, just change the value of `INPUT_DIRECTORY` insode of `file.constants.ts`.
 
-#### Output directory
+#### ⬅ Output directory
 
 The default value for the output directory is `/generated`. In order to use another directory for output files, just change the value of `OUTPUT_DIRECTORY` inside of `file.constants.ts`.
 
