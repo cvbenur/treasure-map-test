@@ -40,10 +40,16 @@ if (map !== null) {
         const nextAdvLoc = getNextAdventurerLocation(adv.loc, adv.orientation, map);
 
         // Save where the adventurer just got on this square or not, for treasure recuperation purposes
-        const justLandedHere = adv.loc === nextAdvLoc;
+        const justLandedHere = adv.loc !== nextAdvLoc;
 
-        // Make the adventurer move on this orientation
-        adv.loc = nextAdvLoc;
+        // If the next location is reachable (no obstacle or other adventurer already on it)
+        if (
+          !map.layout[nextAdvLoc.y][nextAdvLoc.x].canStop
+          && !adventurers.filter(a => a !== adv).some(a => a.loc === nextAdvLoc)
+        ) {
+          // Make the adventurer move on this orientation
+          adv.loc = nextAdvLoc;
+        }
 
         // Consume the move the adventurer just made
         adv.moveSequence.shift();
