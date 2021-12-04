@@ -9,6 +9,7 @@ import { SquareType } from "../enums/square-type.enum";
 /**
  * Initializes and returns an {@link Adventurer} object from a given line
  * @param tokens string[] - The tokenized line
+ * @param map {@link TreasureMap} - The map
  * @returns Initlalized Adventurer object
  */
 export function readAdventurerLine(tokens: string[], map: TreasureMap): Adventurer {
@@ -34,7 +35,7 @@ export function readAdventurerLine(tokens: string[], map: TreasureMap): Adventur
 
   // Check whether the Adventurer is not spawning on an empty square
   if (map.layout[advX][advY].type !== SquareType.NORMAL) {
-    throw new Error('Wrong Y Location for adventurer line (can\'t spawn here): ' + tokens.join(' - '));
+    throw new Error('Wrong Location for adventurer line (can\'t spawn here): ' + tokens.join(' - '));
   }
 
   // Check provided Orientation data
