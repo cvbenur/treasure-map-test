@@ -19,8 +19,6 @@ export function loadDataFromFile(path: string): FileData {
     throw new Error('The provided file doesn\'t exist: ' + path);
   }
 
-  // TODO: handle bad mountain line
-  // TODO: handle bad square/adv lines
   const fileContents = readFileSync(path, { encoding: 'utf-8', flag: 'r' })
     .trim();
 
@@ -53,7 +51,7 @@ export function loadDataFromFile(path: string): FileData {
         }
 
         // Else, read square line
-        const newSquare = readSquareLine(tokens);
+        const newSquare = readSquareLine(tokens, fileData.map);
         fileData.map.layout[newSquare.loc.y][newSquare.loc.x] = newSquare;
       }
         break;

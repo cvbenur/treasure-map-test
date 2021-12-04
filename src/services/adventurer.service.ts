@@ -33,7 +33,7 @@ export function readAdventurerLine(tokens: string[], map: TreasureMap): Adventur
     throw new Error('Wrong Y Location for adventurer line: ' + tokens.join(' - '));
   }
 
-  // Check whether the Adventurer is not spawning on an empty square
+  // Check whether the Adventurer is spawning on an empty square
   if (map.layout[advX][advY].type !== SquareType.NORMAL) {
     throw new Error('Wrong Location for adventurer line (can\'t spawn here): ' + tokens.join(' - '));
   }
