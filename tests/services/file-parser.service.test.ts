@@ -74,6 +74,9 @@ describe('file-parser.service.ts', () => {
       const fn = () => writeDataToFile(MAP_2_DATA, OUTPUT_DIRECTORY_PATH, 'output-test-map-2');
 
       expect(fn).not.toThrow();
+
+      // Removing created test file
+      unlinkSync(join(OUTPUT_DIRECTORY_PATH, 'output-test-map-2.txt'));
     });
 
     it('should create the specified output directory if it doesn\'t exist', () => {
