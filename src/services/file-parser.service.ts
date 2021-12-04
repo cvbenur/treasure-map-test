@@ -14,7 +14,12 @@ import { join } from "path";
  * @returns FileData object
  */
 export function loadDataFromFile(path: string): FileData {
-  // TODO: handle wrong file path
+  // Making sure thr provided file exists
+  if (!existsSync(path)) {
+    throw new Error('The provided file doesn\'t exist: ' + path);
+  }
+
+  // TODO: handle bad square/adv lines
   const fileContents = readFileSync(path, { encoding: 'utf-8', flag: 'r' })
     .trim();
 
@@ -54,6 +59,11 @@ export function loadDataFromFile(path: string): FileData {
       
       // If the line defines an adventurer
       case LineToken.ADVENTURER:
+        // If the map is not properly defined in the text file
+        if (!fileData.map) {
+          throw new Error('Map not properly defined in file.');
+        }
+        
         // Read adventurer line
         fileData.adventurers.push(readAdventurerLine(tokens));
         break;
