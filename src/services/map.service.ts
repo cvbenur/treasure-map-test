@@ -58,6 +58,11 @@ export function initMapFromLine(tokens: string[]): TreasureMap {
  * @returns Initlalized MountainSquare object
  */
 function newMountainSquareFromLine(tokens: string[]): MountainSquare {
+  // Check whether the line contains the correct number of arguments
+  if (tokens.length !== 3) {
+    throw new Error('Wrong number of arguments in line: ' + tokens.join(' - '));
+  }
+
   return {
     loc: { x: Number(tokens[1]), y: Number(tokens[2]) },
     canStop: true,
@@ -71,20 +76,53 @@ function newMountainSquareFromLine(tokens: string[]): MountainSquare {
  * @returns Initlalized TreasureSquare object
  */
 function newTreasureSquareFromLine(tokens: string[]): TreasureSquare {
+  // Check whether the line contains the correct number of arguments
+  if (tokens.length !== 4) {
+    throw new Error('Wrong number of arguments in line: ' + tokens.join(' - '));
+  }
+
+  const sqrTreasures = Number(tokens[3]);
+
+  // Check provided treasure data
+  if (isNaN(sqrTreasures) || sqrTreasures < 0) {
+    throw new Error('Wrong value for treasures on line: ' + tokens.join(' - '));
+  }
+
   return {
     loc: { x: Number(tokens[1]), y: Number(tokens[2]) },
     type: SquareType.TREASURE,
     canStop: false,
-    treasures: Number(tokens[3]),
+    treasures: sqrTreasures,
   };
 }
 
 /**
  * Returns a {@link Square} object from a given line
  * @param tokens string[] - The tokenized line
+ * @param map {@link TreasureMap} - The map
  * @returns Correctly initlalized Square object
  */
-export function readSquareLine(tokens: string[]): Square {
+export function readSquareLine(tokens: string[], map: TreasureMap): Square {
+  tokens = tokens.map(t => t.trim());
+
+  const advX = Number(tokens[1]);
+  const advY = Number(tokens[2]);
+
+  // Check provided X Location data
+  if (isNaN(advX) || advX < 0 || advX > map.width - 1) {
+    throw new Error('Wrong X Location for square line: ' + tokens.join(' - '));
+  }
+
+  // Check provided Y Location data
+  if (isNaN(advY) || advY < 0 || advY > map.height - 1) {
+    throw new Error('Wrong Y Location for square line: ' + tokens.join(' - '));
+  }
+
+  // Check whether the square is spawning on an empty square
+  if (map.layout[advY][advX].type !== SquareType.NORMAL) {
+    throw new Error('Wrong Location for square line (can\'t spawn here): ' + tokens.join(' - '));
+  }
+
   // Reading the first token
   switch (tokens[0]) {
     // If the token defines a MOUNTAIN square

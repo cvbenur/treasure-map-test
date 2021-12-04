@@ -11,6 +11,7 @@ import { TreasureMap } from "../../src/models/interfaces/treasure-map.interface"
 
 import {
   WELL_FORMED_ADVENTURER_LINE,
+  WRONG_ADVENTURER_LINE,
   INDIANA,
   LARA
 } from "../constants/adventurer.constants";
@@ -20,10 +21,76 @@ import { MAP_3_DATA } from "../constants/map.constants";
 describe('adventurer.service.ts', () => {
   describe('readAventurerLine()', () => {
     it('should init a new Adventurer object from a well-formed Adventurer definition line', () => {
-      const actual = readAdventurerLine(WELL_FORMED_ADVENTURER_LINE);
+      const actual = readAdventurerLine(WELL_FORMED_ADVENTURER_LINE, MAP_3_DATA.map as TreasureMap);
       const expected = INDIANA;
 
       expect(actual).toStrictEqual(expected);
+    });
+
+    it('should throw a "Too many arguments in line" error', () => {
+      const mockFn = () => readAdventurerLine(
+        WRONG_ADVENTURER_LINE.TOO_MANY_ARGUMENTS,
+        MAP_3_DATA.map as TreasureMap,
+      );
+
+      const expected = 'Too many arguments in line: ' + WRONG_ADVENTURER_LINE.TOO_MANY_ARGUMENTS.join(' - ');
+      
+      expect(mockFn).toThrow(expected);
+    });
+
+    it('should throw a "wrong X location" error', () => {
+      const mockFn = () => readAdventurerLine(
+        WRONG_ADVENTURER_LINE.WRONG_X_LOCATION_DATA,
+        MAP_3_DATA.map as TreasureMap,
+      );
+
+      const expected = 'Wrong X Location for adventurer line: ' + WRONG_ADVENTURER_LINE.WRONG_X_LOCATION_DATA.join(' - ');
+
+      expect(mockFn).toThrow(expected);
+    });
+
+    it('should throw a "wrong Y location" error', () => {
+      const mockFn = () => readAdventurerLine(
+        WRONG_ADVENTURER_LINE.WRONG_Y_LOCATION_DATA,
+        MAP_3_DATA.map as TreasureMap,
+      );
+
+      const expected = 'Wrong Y Location for adventurer line: ' + WRONG_ADVENTURER_LINE.WRONG_Y_LOCATION_DATA.join(' - ');
+
+      expect(mockFn).toThrow(expected);
+    });
+
+    it('should throw a "wrong spawn point" error', () => {
+      const mockFn = () => readAdventurerLine(
+        WRONG_ADVENTURER_LINE.WRONG_SPAWN_POINT,
+        MAP_3_DATA.map as TreasureMap,
+      );
+
+      const expected = 'Wrong Location for adventurer line (can\'t spawn here): ' + WRONG_ADVENTURER_LINE.WRONG_SPAWN_POINT.join(' - ');
+
+      expect(mockFn).toThrow(expected);
+    });
+
+    it('should throw a "wrong orientation" error', () => {
+      const mockFn = () => readAdventurerLine(
+        WRONG_ADVENTURER_LINE.WRONG_ORIENTATION,
+        MAP_3_DATA.map as TreasureMap,
+      );
+
+      const expected = 'Wrong Orientation for adventurer line: ' + WRONG_ADVENTURER_LINE.WRONG_ORIENTATION.join(' - ');
+
+      expect(mockFn).toThrow(expected);
+    });
+
+    it('should throw a "wrong move sequence" error', () => {
+      const mockFn = () => readAdventurerLine(
+        WRONG_ADVENTURER_LINE.WRONG_MOVE_SEQUENCE,
+        MAP_3_DATA.map as TreasureMap,
+      );
+
+      const expected = 'Wrong move sequence for adventurer line: ' + WRONG_ADVENTURER_LINE.WRONG_MOVE_SEQUENCE.join(' - ');
+
+      expect(mockFn).toThrow(expected);
     });
   });
 
