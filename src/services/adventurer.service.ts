@@ -3,16 +3,53 @@ import { Move } from "../enums/move.enum";
 import { Orientation } from "../enums/orientation.enum";
 import { TreasureMap } from "../models/interfaces/treasure-map.interface";
 import { Location } from "../models/interfaces/location.interface";
+import { checkValueInEnum } from "../utils/enum.utils";
+import { SquareType } from "../enums/square-type.enum";
 
 /**
  * Initializes and returns an {@link Adventurer} object from a given line
  * @param tokens string[] - The tokenized line
  * @returns Initlalized Adventurer object
  */
-export function readAdventurerLine(tokens: string[]): Adventurer {
+export function readAdventurerLine(tokens: string[], map: TreasureMap): Adventurer {
+  tokens = tokens.map(t => t.trim());
+
+  // Check whether the line contains the correct number of arguments
+  if (tokens.length !== 6) {
+    throw new Error('Too many arguments in line: ' + tokens.join(' - '));
+  }
+
+  const advX = Number(tokens[2]);
+  const advY = Number(tokens[3]);
+
+  // Check provided X Location data
+  if (isNaN(advX) || advX < 0 || advX > map.width - 1) {
+    throw new Error('Wrong X Location for adventurer line: ' + tokens.join(' - '));
+  }
+
+  // Check provided Y Location data
+  if (isNaN(advY) || advY < 0 || advY > map.height - 1) {
+    throw new Error('Wrong Y Location for adventurer line: ' + tokens.join(' - '));
+  }
+
+  // Check whether the Adventurer is not spawning on an empty square
+  if (map.layout[advX][advY].type !== SquareType.NORMAL) {
+    throw new Error('Wrong Y Location for adventurer line (can\'t spawn here): ' + tokens.join(' - '));
+  }
+
+  // Check provided Orientation data
+  if (!checkValueInEnum(tokens[4], Orientation)) {
+    throw new Error('Wrong Orientation for adventurer line: ' + tokens.join(' - '));
+  }
+
+  // Check provided Move sequence data
+  if (tokens[5].split('').some(t => !checkValueInEnum(t, Move))) {
+    throw new Error('Wrong move sequence for adventurer line: ' + tokens.join(' - '));
+  }
+
   return {
     name: tokens[1],
-    loc: { x: Number(tokens[2]), y: Number(tokens[3]) },
+    loc: { x: advX, y: advY },
     orientation: tokens[4] as Orientation,
     moveSequence: tokens[5].split('') as Move[],
     treasures: 0,
