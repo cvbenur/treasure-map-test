@@ -60,7 +60,7 @@ export function initMapFromLine(tokens: string[]): TreasureMap {
 function newMountainSquareFromLine(tokens: string[]): MountainSquare {
   // Check whether the line contains the correct number of arguments
   if (tokens.length !== 3) {
-    throw new Error('Too many arguments in line: ' + tokens.join(' - '));
+    throw new Error('Wrong number of arguments in line: ' + tokens.join(' - '));
   }
 
   return {
@@ -78,13 +78,13 @@ function newMountainSquareFromLine(tokens: string[]): MountainSquare {
 function newTreasureSquareFromLine(tokens: string[]): TreasureSquare {
   // Check whether the line contains the correct number of arguments
   if (tokens.length !== 4) {
-    throw new Error('Too many arguments in line: ' + tokens.join(' - '));
+    throw new Error('Wrong number of arguments in line: ' + tokens.join(' - '));
   }
 
   const sqrTreasures = Number(tokens[3]);
 
   // Check provided treasure data
-  if (isNaN(sqrTreasures)) {
+  if (isNaN(sqrTreasures) || sqrTreasures < 0) {
     throw new Error('Wrong value for treasures on line: ' + tokens.join(' - '));
   }
 
@@ -119,7 +119,7 @@ export function readSquareLine(tokens: string[], map: TreasureMap): Square {
   }
 
   // Check whether the square is spawning on an empty square
-  if (map.layout[advX][advY].type !== SquareType.NORMAL) {
+  if (map.layout[advY][advX].type !== SquareType.NORMAL) {
     throw new Error('Wrong Location for square line (can\'t spawn here): ' + tokens.join(' - '));
   }
 
